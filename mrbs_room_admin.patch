@@ -1,0 +1,25 @@
+*** /home/prashant/softwares/mrbs-1.4.10/web/mrbs_auth.inc	2012-10-04 14:14:23.910759000 +0530
+--- mrbs_auth.inc	2013-12-17 08:11:25.278209101 +0530
+***************
+*** 220,225 ****
+  //           the room; otherwise FALSE
+  function auth_book_admin($user, $room)
+  {
+!   return (authGetUserLevel($user) >= 2);
+  }
+  ?>
+--- 220,233 ----
+  //           the room; otherwise FALSE
+  function auth_book_admin($user, $room)
+  {
+! 	// Fetch the repsptective room_admin from mrbs_room table for given room 	
+! 	$room_admin = sql_query1("SELECT room_admin FROM mrbs_room WHERE id=$room AND disabled=0 LIMIT 1");
+! 	$room_admin_flag = FALSE;
+! 	if ($room_admin === $user)
+! 	{
+! 		$room_admin_flag = TRUE;
+! 	}
+! 
+! 	return (authGetUserLevel($user) >= 2 && $room_admin_flag);
+  }
+  ?>
